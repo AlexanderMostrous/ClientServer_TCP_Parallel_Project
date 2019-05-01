@@ -7,7 +7,7 @@ public class Deliverer implements Runnable{
 
 	private Socket socket;
 	private AirportData data;
-	
+
 	public Deliverer(Socket aSocket, AirportData ad){
 		this.socket = aSocket;
 		this.data = ad;
@@ -16,23 +16,38 @@ public class Deliverer implements Runnable{
 	public void run() {
 		System.out.println("Connected: " + socket);
 		String clientCommand = "";
-        try {
-        	Scanner in = new Scanner(socket.getInputStream());
-        	PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
-            while (in.hasNextLine()) {
-                clientCommand = in.nextLine();
-            }
-            
-            if(clientCommand.startsWith("READ"))
-            	;
-        } catch (Exception e) {
-            System.out.println("Error:" + socket);
-        } finally {
-            try { socket.close(); } catch (IOException e) {}
-            System.out.println("Closed: " + socket);
-        }
+		try {
+			Scanner in = new Scanner(socket.getInputStream());
+			while (in.hasNextLine()) {
+				clientCommand = in.nextLine();
+			}
+
+			String l[];
+			if(clientCommand.startsWith("READ"))
+			{
+				l = data.getLine(clientCommand.substring(6));
+				//l now looks like: l["XY4352","Arrival","12:40"]
+				PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+				if(l.equals(null))
+					out.println("RERR");
+				else
+					out.println("ROK <"+l[0]+"> <"+l[1]+"> <"+l[2]+">");
+			}
+			else
+			{
+				
+			}
+				
+
+
+		} catch (Exception e) {
+			System.out.println("Error:" + socket);
+		} finally {
+			try { socket.close(); } catch (IOException e) {}
+			System.out.println("Closed: " + socket);
+		}
 	}
-	
-	
+
+
 
 }
