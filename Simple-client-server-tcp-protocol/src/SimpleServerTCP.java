@@ -9,6 +9,7 @@ public class SimpleServerTCP {
 	@SuppressWarnings("resource")
 	public static void main(String args[]) throws IOException {
 
+		//TODO  java.net.BindException debug then run
 		ServerSocket connectionSocket = new ServerSocket(PORT);
 		System.out.println("Server is listening to port: " + PORT);	
 
