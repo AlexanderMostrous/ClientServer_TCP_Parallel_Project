@@ -7,25 +7,26 @@ public class SimpleClientTCP {
 	public static void main(String args[]) throws IOException {
 
 		//InetAddress address = InetAddress.getByName(HOST);
-		Socket dataSocket = new Socket(HOST, PORT);
+		Socket socket = new Socket(HOST, PORT);
 
-		InputStream is = dataSocket.getInputStream();
+		InputStream is = socket.getInputStream();
 		BufferedReader in = new BufferedReader(new InputStreamReader(is));
-		OutputStream os = dataSocket.getOutputStream();
+		OutputStream os = socket.getOutputStream();
 		PrintWriter out = new PrintWriter(os,true);
 
 		System.out.println("Connection to " + HOST + " established");
 
-		String inmsg, outmsg;
-		ClientProtocol app = new ClientProtocol();
+		//String inmsg, outmsg;
+		//ClientProtocol app = new ClientProtocol();
 
-		outmsg = app.prepareRequest();
-		out.println(outmsg);
-		inmsg = in.readLine();
-		app.processReply(inmsg);
+		//outmsg = app.prepareRequest();
+		out.println("XY4389");
+		String inmsg = in.readLine();
+		//app.processReply(inmsg);
+		
+		System.out.println("Client says: "+ inmsg);
 
-
-		dataSocket.close();
+		socket.close();
 		System.out.println("Data Socket closed");
 	}
 }			
