@@ -22,12 +22,18 @@ public class AirportData {
 		
 		while(!found)
 		{
+			System.out.println("Not found yet!!!");
+			System.out.println("rows.get(counter)[0] = "+rows.get(counter)[0]+" and code = "+code);
+			
+			
 			if(rows.get(counter)[0].equals(code))
 			{
 				found = true;
 				s = rows.get(counter);
 			}
+			counter++;
 		}
+		System.out.println("Found!");
 		if(found)
 			return s;
 		else

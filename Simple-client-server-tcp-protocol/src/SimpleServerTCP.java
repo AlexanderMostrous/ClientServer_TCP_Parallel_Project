@@ -19,6 +19,7 @@ public class SimpleServerTCP {
 		System.out.println("Received request from " + dataSocket.getInetAddress());
 
 		Deliverer d = new Deliverer(dataSocket, ad);
+		System.out.println("New Deliverer is running");
 		d.run();
 		
 		/*

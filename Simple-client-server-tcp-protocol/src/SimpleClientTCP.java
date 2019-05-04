@@ -20,7 +20,7 @@ public class SimpleClientTCP {
 		//ClientProtocol app = new ClientProtocol();
 
 		//outmsg = app.prepareRequest();
-		out.println("XY4389");
+		out.println("READ <XY4389>");
 		String inmsg = in.readLine();
 		//app.processReply(inmsg);
 		
