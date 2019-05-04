@@ -15,14 +15,8 @@ public class SimpleClientTCP {
 		PrintWriter out = new PrintWriter(os,true);
 
 		System.out.println("Connection to " + HOST + " established");
-
-		//String inmsg, outmsg;
-		//ClientProtocol app = new ClientProtocol();
-
-		//outmsg = app.prepareRequest();
-		out.println("READ <XY4389>");
+		out.println("READ <XV4389>");
 		String inmsg = in.readLine();
-		//app.processReply(inmsg);
 		
 		System.out.println("Client says: "+ inmsg);
 

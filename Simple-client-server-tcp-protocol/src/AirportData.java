@@ -31,10 +31,14 @@ public class AirportData {
 				found = true;
 				s = rows.get(counter);
 			}
+
 			counter++;
+
+			if(counter>rows.size())
+				break;
 		}
-		System.out.println("Found!");
-		if(found)
+		
+		if(found)		
 			return s;
 		else
 			return null;

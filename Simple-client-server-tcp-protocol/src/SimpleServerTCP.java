@@ -22,22 +22,7 @@ public class SimpleServerTCP {
 		System.out.println("New Deliverer is running");
 		d.run();
 		
-		/*
-		InputStream is = dataSocket.getInputStream();
-		BufferedReader in = new BufferedReader(new InputStreamReader(is));
-		OutputStream os = dataSocket.getOutputStream();
-		PrintWriter out = new PrintWriter(os,true);
-		
-		
-		String inmsg, outmsg;
-		inmsg = in.readLine();
-		ServerProtocol app = new ServerProtocol();
-		outmsg = app.processRequest(inmsg);
-		out.println(outmsg);
-		*/
 		}
-		//dataSocket.close();
-		//System.out.println("Data socket closed");	
 	}
 }			
 

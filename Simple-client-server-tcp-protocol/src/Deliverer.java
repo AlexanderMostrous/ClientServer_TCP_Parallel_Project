@@ -19,13 +19,14 @@ public class Deliverer implements Runnable{
 		try {
 			Scanner in = new Scanner(socket.getInputStream());
 			
-			//while (in.hasNextLine()) {
-				clientCommand = in.nextLine();
-			//}
+			
+			clientCommand = in.nextLine();
+			
 			System.out.println("clientCommand="+clientCommand);
 			String l[];
 			if(clientCommand.startsWith("READ"))
-			{System.out.println("Client command starts with READ");
+			{
+				System.out.println("Client command starts with READ");
 				System.out.println("clientCommand.substring(6) = "+clientCommand.substring(6,clientCommand.length()-1));
 				l = data.getLine(clientCommand.substring(6,clientCommand.length()-1));
 				//l now looks like: l["XY4352","Arrival","12:40"]
@@ -38,7 +39,7 @@ public class Deliverer implements Runnable{
 			}
 			else
 			{
-				
+				System.out.println("Client command does NOT start with READ");
 			}
 				
 
