@@ -1,3 +1,5 @@
+import static org.junit.Assert.assertEquals;
+
 import java.util.ArrayList;
 
 public class AirportData {
@@ -13,7 +15,7 @@ public class AirportData {
 	/*
 	 * Evresh grammhs ston pinaka me anazhthsh vasei tou kwdikou dromologiou mias pthshs.
 	 */
-	public String[] getLine(String code)
+	public String[] getLine_READ(String code)
 	{
 		String[] s = new String[colNumber];
 		
@@ -44,6 +46,13 @@ public class AirportData {
 			return null;
 	}
 	
+	public String addLine_WRITE(String code, String status, String time)
+	{
+		
+	
+		
+		return "WOK";
+	}
 	
 	private void initializeDummy()
 	{

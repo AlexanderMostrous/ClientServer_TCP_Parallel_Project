@@ -12,7 +12,7 @@ public class Deliverer implements Runnable{
 		this.socket = aSocket;
 		this.data = ad;
 	}
-	@Override
+	
 	public void run() {
 		System.out.println("Connected: " + socket);
 		String clientCommand = "";
@@ -28,7 +28,7 @@ public class Deliverer implements Runnable{
 			{
 				System.out.println("Client command starts with READ");
 				System.out.println("clientCommand.substring(6) = "+clientCommand.substring(6,clientCommand.length()-1));
-				l = data.getLine(clientCommand.substring(6,clientCommand.length()-1));
+				l = data.getLine_READ(clientCommand.substring(6,clientCommand.length()-1));
 				//l now looks like: l["XY4352","Arrival","12:40"]
 				System.out.println("The line found was: l[0] = "+l[0]+", l[1] = "+l[1]+", l[2] = "+l[2]);
 				PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
@@ -37,17 +37,34 @@ public class Deliverer implements Runnable{
 				else
 					out.println("ROK <"+l[0]+"> <"+l[1]+"> <"+l[2]+">");
 			}
-			else
+			else if(clientCommand.startsWith("WRITE"))
 			{
-				System.out.println("Client command does NOT start with READ");
-			}
+				System.out.println("Client command starts with WRITE");
+				System.out.println("clientCommand.substring(6) = "+clientCommand.substring(6,clientCommand.length()));
+
+				String message = clientCommand.substring(6,clientCommand.length());
+				message = message.replaceAll("\\s", "");
+				l = data.getLine_READ(message);
+				String[] tokens=message.split("[<>]");
+				String returnableMessage = this.data.addLine_WRITE(l[1], l[3], l[5]);
 				
-
-
-		} catch (Exception e) {
+				PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+				out.println(returnableMessage);
+			
+			}
+			else
+				System.out.println("BUG! Client command does NOT start with READ or WRITE!!!");
+		} 
+		catch (Exception e) {
 			System.out.println("Error:" + socket);
-		} finally {
-			try { socket.close(); } catch (IOException e) {}
+		} 
+		finally 
+		{
+			try 
+			{
+				socket.close();
+				}
+			catch (IOException e) {}
 			System.out.println("Closed: " + socket);
 		}
 	}
