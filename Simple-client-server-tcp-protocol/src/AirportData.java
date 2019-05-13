@@ -1,4 +1,4 @@
-import static org.junit.Assert.assertEquals;
+//import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
 
@@ -48,9 +48,6 @@ public class AirportData {
 	
 	public String addLine_WRITE(String code, String status, String time)
 	{
-		
-	
-		
 		return "WOK";
 	}
 	
