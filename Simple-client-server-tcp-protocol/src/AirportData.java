@@ -1,63 +1,99 @@
 //import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
+import java.util.concurrent.locks.*;
 
 public class AirportData {
 	private static final int colNumber = 3;
-	
+	private ReadWriteLock lock;
+	private Lock writeLock, readLock;
+
 	private ArrayList<String[]> rows = new ArrayList<String[]>();
 	public AirportData()
 	{
 		initializeDummy();
+		lock = new ReentrantReadWriteLock();
+		writeLock = lock.writeLock();
+		readLock = lock.readLock();
+
 	}
-	
-	
+
+
 	/*
 	 * Evresh grammhs ston pinaka me anazhthsh vasei tou kwdikou dromologiou mias pthshs.
 	 */
 	public String[] getLine_READ(String code)
 	{
-		String[] s = new String[colNumber];
-		
-		boolean found = false;
-		int counter = 0;
-		
-		while(!found)
+		try
 		{
-			System.out.println("Not found yet!!!");
-			System.out.println("rows.get(counter)[0] = "+rows.get(counter)[0]+" and code = "+code);
-			
-			
-			if(rows.get(counter)[0].equals(code))
+			readLock.lock();
+			String[] s = new String[colNumber];
+
+			boolean found = false;
+			int counter = 0;
+
+			while(!found)
 			{
-				found = true;
-				s = rows.get(counter);
+				System.out.println("rows.get(counter)[0] = "+rows.get(counter)[0]+" and code = "+code);
+
+
+				if(rows.get(counter)[0].equals(code))
+				{
+					found = true;
+					s = rows.get(counter);
+				}
+
+				counter++;
+
+				if(counter>rows.size())
+					break;
 			}
 
-			counter++;
-
-			if(counter>rows.size())
-				break;
+			if(found)		
+				return s;
+			else
+				return null;
 		}
-		
-		if(found)		
-			return s;
-		else
-			return null;
+		finally
+		{
+			readLock.unlock();
+		}
 	}
-	
+
 	public String addLine_WRITE(String code, String status, String time)
 	{
 		return "WOK";
 	}
-	
+
 	private void initializeDummy()
 	{
+		//1-5
 		rows.add(new String[] {"XY4352","Arrival","12:40"});
 		rows.add(new String[] {"KY5434","Departure","02:35"});
 		rows.add(new String[] {"AG4598","Arrival","17:15"});
 		rows.add(new String[] {"BD4311","Arrival","12:00"});
 		rows.add(new String[] {"XY4389","Departure","23:30"});
-		rows.add(new String[] {"XY9761","Departure","00:55"});
+		
+		//6-10
+		rows.add(new String[] {"DB9761","Arrival","00:55"});		
+		rows.add(new String[] {"CJ1231","Departure","00:55"});
+		rows.add(new String[] {"XY4433","Departure","00:55"});
+		rows.add(new String[] {"XV4389","Departure","00:55"});
+		rows.add(new String[] {"XY5422","Arrival","00:55"});
+		
+		//11-15
+		rows.add(new String[] {"XY6431","Departure","20:25"});
+		rows.add(new String[] {"XH9761","Departure","00:00"});
+		rows.add(new String[] {"KY5461","Departure","07:15"});
+		rows.add(new String[] {"LO9111","Departure","08:55"});
+		rows.add(new String[] {"ST0961","Departure","02:30"});
+		
+		//16-20
+		rows.add(new String[] {"UJ9761","Arrival","00:55"});
+		rows.add(new String[] {"ST0821","Arrival","14:05"});
+		rows.add(new String[] {"KA0961","Departure","17:45"});
+		rows.add(new String[] {"AB1217","Arrival","02:20"});
+		rows.add(new String[] {"KL0964","Departure","04:50"});
+		
 	}
 }
