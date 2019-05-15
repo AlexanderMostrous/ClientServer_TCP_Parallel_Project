@@ -61,7 +61,8 @@ public class Reader implements Runnable{
 		try{
 			System.out.println("myHost is: "+myHost+", myPort is: "+myPort);
 			mySocket = new Socket(myHost,myPort);
-
+			//mySocket.setSoTimeout(0);
+			
 			InputStream is = mySocket.getInputStream();
 			in = new BufferedReader(new InputStreamReader(is));
 			OutputStream os = mySocket.getOutputStream();
@@ -100,16 +101,20 @@ public class Reader implements Runnable{
 			System.out.println();
 
 			String inmsg;
-			try {
+			try 
+			{
 				inmsg = in.readLine();
 				System.out.println("Client says: "+ inmsg);
-			} catch (IOException e) {
+			} 
+			catch (IOException e) 
+			{
 				e.printStackTrace();
 			}
 			
-
+			
 			counter++;
 		}while(counter<readsLimit);
+		System.out.println("Reader finished. END message will now be sent to ServerThread.");
 		out.println("END");
 	}
 	

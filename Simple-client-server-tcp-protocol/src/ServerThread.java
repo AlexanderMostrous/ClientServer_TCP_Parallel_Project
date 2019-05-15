@@ -45,14 +45,14 @@ public class ServerThread implements Runnable{
 				String message = clientCommand.substring(6,clientCommand.length());
 				message = message.replaceAll("\\s", "");
 				l = data.getLine_READ(message);
-				String[] tokens=message.split("[<>]");
+				//String[] tokens=message.split("[<>]");
 				String returnableMessage = this.data.addLine_WRITE(l[1], l[3], l[5]);
 				
 				PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
 				out.println(returnableMessage);
 			
 			}
-			else if()
+			else if(clientCommand.equals("END"))
 			{
 				
 			}
