@@ -1,7 +1,7 @@
 import java.net.*;
 import java.io.*;
 public class SimpleClientTCP {
-	private static final String HOST1 = "localhost1",HOST2 = "localhost2";
+	private static final String HOST1 = "localhost",HOST2 = HOST1;
 	private static final int PORT1 = 1234, PORT2 = 2345;
 
 	public static void main(String args[]) throws IOException {

@@ -3,26 +3,26 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.Scanner;
 
-public class Deliverer implements Runnable{
+public class ServerThread implements Runnable{
 
 	private Socket socket;
 	private AirportData data;
 
-	public Deliverer(Socket aSocket, AirportData ad){
+	public ServerThread(Socket aSocket, AirportData ad){
 		this.socket = aSocket;
 		this.data = ad;
 	}
 	
 	public void run() {
 		System.out.println("Connected: " + socket);
-		String clientCommand = "";
+		
 		try {
 			Scanner in = new Scanner(socket.getInputStream());
 			
 			
-			clientCommand = in.nextLine();
+			String clientCommand = in.nextLine();
 			
-			System.out.println("clientCommand="+clientCommand);
+			System.out.println("clientCommand = "+clientCommand);
 			String l[];
 			if(clientCommand.startsWith("READ"))
 			{
@@ -51,6 +51,10 @@ public class Deliverer implements Runnable{
 				PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
 				out.println(returnableMessage);
 			
+			}
+			else if()
+			{
+				
 			}
 			else
 				System.out.println("BUG! Client command does NOT start with READ or WRITE!!!");

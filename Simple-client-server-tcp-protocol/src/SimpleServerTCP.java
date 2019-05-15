@@ -1,28 +1,51 @@
-import java.net.*;
-import java.io.*;
+import java.io.IOException;
+import java.net.ServerSocket;
+import java.net.Socket;
 
-public class SimpleServerTCP {
-	
-	private static final int PORT = 1234;
-	private static AirportData ad = new AirportData();
-	
-	//@SuppressWarnings("resource")
-	public static void main(String args[]) throws IOException {
+/*
+ * Each SimpleServerTCP object listens to a different port number.
+ */
+public class SimpleServerTCP extends Thread{
 
-		//TODO Make server listen to multiple ports.
-		ServerSocket connectionSocket = new ServerSocket(PORT);
-		System.out.println("Server is listening to port: " + PORT);	
+	private int myPort;
 
-		while(true)
-		{
-		Socket dataSocket = connectionSocket.accept();
-		System.out.println("Received request from " + dataSocket.getInetAddress());
+	public SimpleServerTCP(int port) throws IOException
+	{
+		myPort = port;
+	}
 
-		Deliverer d = new Deliverer(dataSocket, ad);
-		System.out.println("New Deliverer is running");
-		d.run();
+	@Override
+	public void run(){
 		
+		try 
+		{
+			
+			while(true)
+			{
+				ServerSocket connectionSocket = null;
+				connectionSocket = new ServerSocket(myPort);
+				
+				System.out.println("Server is listening to port: " + myPort);
+				Socket dataSocket;
+				
+				dataSocket = connectionSocket.accept();
+				
+				System.out.println("Received request from " + dataSocket.getInetAddress());
+
+				ServerThread d = new ServerThread(dataSocket, ServerSideMain.ad);
+				System.out.println("New ServerThread is running");
+				d.run();
+				connectionSocket.close();
+			}
+		} 
+		catch (IOException e) 
+		{
+			e.printStackTrace();
 		}
+		
+
+		
+		
 	}
 }			
 
