@@ -1,11 +1,5 @@
-ServerSideMain -> SimpleServerTCP (extends Thread)
+TODO Task
 
-SimpleServerTCP while(true)
-{
-	-> ServerSocket το οποίο περιμένει ως listener μέχρι να δημιουργηθεί σύνδεση. 
-	αφότου επιτευχθεί σύνδεση του Reader με το ServerSocket τότε
-	-> ServerThread (extends Thread) με όρισμα το δημιουργηθέν ServerSocket
-	άμεσο κλείσιμο του ServerSocket !!! Σίγουρο λάθος!!! Πρέπει να αλλλάξει!!
-}
+Πρέπει να δημιουργείται ένα  ServerThread για κάθε ανάγνωση ενός Reader object.
 
 
