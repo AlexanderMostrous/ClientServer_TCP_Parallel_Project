@@ -26,7 +26,7 @@ public class AirportData {
 	{
 		try
 		{
-			readLock.lock();
+			//readLock.lock();
 			String[] s = new String[colNumber];
 
 			boolean found = false;
@@ -34,9 +34,6 @@ public class AirportData {
 
 			while(!found)
 			{
-				System.out.println("rows.get(counter)[0] = "+rows.get(counter)[0]+" and code = "+code);
-
-
 				if(rows.get(counter)[0].equals(code))
 				{
 					found = true;
@@ -45,7 +42,7 @@ public class AirportData {
 
 				counter++;
 
-				if(counter>rows.size())
+				if(counter>=rows.size())
 					break;
 			}
 
@@ -56,7 +53,7 @@ public class AirportData {
 		}
 		finally
 		{
-			readLock.unlock();
+			//readLock.unlock();
 		}
 	}
 

@@ -9,8 +9,8 @@ public class SimpleClientTCP {
 		Reader r1 = new Reader(HOST1,PORT1);
 		Reader r2 = new Reader(HOST2,PORT2);
 		
-		r1.run();
-		r2.run();
+		r1.start();
+		r2.start();
 
 	}
 }			

@@ -7,11 +7,12 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.Scanner;
 
-public class Reader implements Runnable{
+public class Reader extends Thread{
 
 	private ArrayList<String> requestList;
-	private int myPort;
+	private int myPort, requestsSent;
 	private String myHost;
 	private Socket mySocket;
 	private BufferedReader in;
@@ -23,7 +24,7 @@ public class Reader implements Runnable{
 		requestList = new ArrayList<>();
 		myPort = port;
 		myHost = host;
-		
+
 
 	}
 	@Override
@@ -31,93 +32,133 @@ public class Reader implements Runnable{
 	{
 		initializeRequestList();
 		establishConnectionWithServer();
-		requestRandomReads();
-		out.close();
-
-		try 
-		{
-			mySocket.close();
-			System.out.println("Data Socket closed");
-		} 
-		catch (IOException e) 
-		{
-			e.printStackTrace();
-		}
-
+		sendRequestsToServer();
+		printToConsoleIncomingAnswersFromServer();
+		closeConnectionWithServer();
 	}
 
+	/*
+	 * 
+	 * Reader will perform a random number of reads.
+	 * 
+	 */
 	private void initializeRequestList()
 	{
-		requestList.add("READ <DB9761>");//EXISTS
-		//requestList.add("READ <KT4129>");
-		requestList.add("READ <AB1217>");//EXISTS
-		//requestList.add("READ <CV7771>");
-		requestList.add("READ <XV4389>");//EXISTS
+		ArrayList<String> defaultList = new ArrayList<String>();
+		defaultList.add("READ <DB9761>");//EXISTS
+		defaultList.add("READ <KT4129>");
+		defaultList.add("READ <AB1217>");//EXISTS
+		defaultList.add("READ <CV7771>");
+		defaultList.add("READ <XV4389>");//EXISTS
+		defaultList.add("READ <UJ9761>");//EXISTS
+		defaultList.add("READ <ST0821>");//EXISTS
+		defaultList.add("READ <KA0961>");//EXISTS
+		defaultList.add("READ <AB1217>");//EXISTS
+		defaultList.add("READ <KL0964>");//EXISTS
+		defaultList.add("READ <GG6264>");
+		defaultList.add("READ <XY4433>");//EXISTS
+		
+
+		Random rand = new Random();
+		int counter = 0;
+		int readsLimit = rand.nextInt(defaultList.size());//Random number <= size of defaultlist == number of read requests from server - 1
+
+		//Eksagontai tyxaia stoixeia apo th defaultList kai eisagontai sthn requestList
+		do
+		{
+			int index = rand.nextInt(defaultList.size());
+			requestList.add(defaultList.remove(index));
+			counter++;
+		}while(counter<readsLimit);
+		
+		
+		
+		//Amount of requests-responses is:
+		requestsSent = requestList.size();
+		System.out.println("I am: "+this+" and i will make "+requestsSent+" requests from server.");
 	}
-	
+
 	private void establishConnectionWithServer()
 	{
 
 		try{
 			System.out.println("myHost is: "+myHost+", myPort is: "+myPort);
 			mySocket = new Socket(myHost,myPort);
-			//mySocket.setSoTimeout(0);
-			
+
 			InputStream is = mySocket.getInputStream();
 			in = new BufferedReader(new InputStreamReader(is));
 			OutputStream os = mySocket.getOutputStream();
 			out = new PrintWriter(os,true);
 
-			System.out.println("Connection to " + myHost + " established");
+			System.out.println("I am: "+this+". i managed to establish connection to " + myHost);
 
 		} 
 		catch (IOException e) 
 		{
 			System.out.println("Something went really bad!");		}
-		
+
 	}
-	
-	/*
-	 * 
-	 * Reader will perform a random number of reads.
-	 * 
-	 */
-	private void requestRandomReads()
+
+
+	private void sendRequestsToServer()
 	{
-		Random rand = new Random();
-		int counter = 0;
-		int readsLimit = rand.nextInt(10);//Random number between [0,10) = read requests from server
 
-		System.out.println("readsLimit is: "+readsLimit+" and list size is "+this.requestList.size());
-		do
+		for(String read: this.requestList)
 		{
+			out.println(read);
+		}
 
-			System.out.print("Counter is: "+counter+" and ");
-			int index = rand.nextInt(this.requestList.size());
-			System.out.print("index is: "+index+" and");
-			String requestCodeText = requestList.get(index);
-			System.out.print("requestCodeText is: "+requestCodeText+".");
-			out.println(requestCodeText);//Get random element of list.
-			System.out.println();
-
-			String inmsg;
-			try 
-			{
-				inmsg = in.readLine();
-				System.out.println("Client says: Server's response is: "+ inmsg);
-			} 
-			catch (IOException e) 
-			{
-				e.printStackTrace();
-			}
-			
-			
-			counter++;
-		}while(counter<readsLimit);
 		System.out.println("Reader finished. END message will now be sent to ServerThread.");
 		out.println("END");
+
+	}
+
+	private void printToConsoleIncomingAnswersFromServer()
+	{
+		int responsesReceived = 0;
+		try
+		{
+			Scanner ins = new Scanner(in);
+			while(true)
+			{
+				if(ins.hasNextLine())
+				{
+					String serverResponse = ins.nextLine();
+					System.out.println("I am "+this+". Response num = #"+responsesReceived+" "+serverResponse);
+					responsesReceived++;
+					if(!(responsesReceived<requestsSent))
+					{
+						System.out.println("All responses where gathered.");
+						break;
+					}
+				} 
+				else
+					System.out.println("Infinity...");
+			}
+			in.close();
+			ins.close();
+		}
+		catch (IOException e) 
+		{
+			e.printStackTrace();
+		}
+	}
+	private void closeConnectionWithServer()
+	{
+		try 
+		{
+			mySocket.close();
+			System.out.println("I am "+this+" Data Socket closed");
+		} 
+		catch (IOException e) 
+		{
+			e.printStackTrace();
+		}
 	}
 	
 	
-
+	public String toString()
+	{
+		return this.getName();
+	}
 }
