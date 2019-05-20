@@ -104,7 +104,7 @@ public class Reader implements Runnable{
 			try 
 			{
 				inmsg = in.readLine();
-				System.out.println("Client says: "+ inmsg);
+				System.out.println("Client says: Server's response is: "+ inmsg);
 			} 
 			catch (IOException e) 
 			{
