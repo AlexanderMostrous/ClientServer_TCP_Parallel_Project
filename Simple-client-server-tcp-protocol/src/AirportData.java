@@ -18,15 +18,16 @@ public class AirportData {
 
 	}
 
-
 	/*
 	 * Evresh grammhs ston pinaka me anazhthsh vasei tou kwdikou dromologiou mias pthshs.
 	 */
 	public String[] getLine_READ(String code)
 	{
+		
 		try
 		{
 			readLock.lock();
+			System.out.println(Thread.currentThread().getName()+" ...i am in!");
 			String[] s = new String[colNumber];
 
 			boolean found = false;
@@ -53,6 +54,7 @@ public class AirportData {
 		}
 		finally
 		{
+			System.out.println(Thread.currentThread().getName()+" ...i am out!");
 			readLock.unlock();
 		}
 	}
@@ -63,7 +65,7 @@ public class AirportData {
 	}
 
 	private void initializeDummy()
-	{
+	{		
 		//1-5
 		rows.add(new String[] {"XY4352","Arrival","12:40"});
 		rows.add(new String[] {"KY5434","Departure","02:35"});

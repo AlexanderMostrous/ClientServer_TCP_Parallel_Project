@@ -124,7 +124,7 @@ public class Reader extends Thread{
 				if(ins.hasNextLine())
 				{
 					String serverResponse = ins.nextLine();
-					System.out.println("I am "+this+". Response num = #"+responsesReceived+" "+serverResponse);
+					//System.out.println("I am "+this+". Response num = #"+responsesReceived+" "+serverResponse);
 					responsesReceived++;
 					if(!(responsesReceived<requestsSent))
 					{
