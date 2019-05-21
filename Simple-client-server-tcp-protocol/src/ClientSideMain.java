@@ -1,6 +1,6 @@
 import java.net.*;
 import java.io.*;
-public class SimpleClientTCP {
+public class ClientSideMain {
 	private static final String HOST1 = "localhost",HOST2 = HOST1;
 	private static final int PORT1 = 1234, PORT2 = 2345;
 

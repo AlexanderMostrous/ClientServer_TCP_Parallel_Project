@@ -26,7 +26,7 @@ public class AirportData {
 	{
 		try
 		{
-			//readLock.lock();
+			readLock.lock();
 			String[] s = new String[colNumber];
 
 			boolean found = false;
@@ -53,7 +53,7 @@ public class AirportData {
 		}
 		finally
 		{
-			//readLock.unlock();
+			readLock.unlock();
 		}
 	}
 
