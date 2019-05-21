@@ -5,6 +5,7 @@ import java.util.concurrent.locks.*;
 
 public class AirportData {
 	private static final int colNumber = 3;
+	private static final int writerDelay = 3;
 	private ReadWriteLock lock;
 	private Lock writeLock, readLock;
 
@@ -18,6 +19,7 @@ public class AirportData {
 
 	}
 
+	
 	/*
 	 * Evresh grammhs ston pinaka me anazhthsh vasei tou kwdikou dromologiou mias pthshs.
 	 */
@@ -61,7 +63,23 @@ public class AirportData {
 
 	public String addLine_WRITE(String code, String status, String time)
 	{
-		return "WOK";
+		try {
+		writeLock.lock();
+		rows.add(new String[] {code,status,time});
+		
+			wait(1000*writerDelay);//Delay writing procedure so that locks hold on for a big chunk of time and induce traffic.
+			return "WOK";
+			
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+			return "WERR";
+		}		
+		finally
+		{
+		writeLock.unlock();
+		
+		}
+		
 	}
 
 	private void initializeDummy()

@@ -36,16 +36,15 @@ public class ServerThread implements Runnable{
 					}
 					else if(clientCommand.startsWith("WRITE"))
 					{
-						System.out.println("Client command starts with WRITE");
-						System.out.println("clientCommand.substring(6) = "+clientCommand.substring(6,clientCommand.length()));
-
-						String message = clientCommand.substring(6,clientCommand.length());
-						message = message.replaceAll("\\s", "");
-						l = data.getLine_READ(message);
-						String returnableMessage = this.data.addLine_WRITE(l[1], l[3], l[5]);
-
+						String[] s = clientCommand.split(" ");
+						s[1]=s[1].substring(1,s[1].length()-1);
+						s[2]=s[2].substring(1,s[2].length()-1);
+						s[3]=s[3].substring(1,s[3].length()-1);
+						
+						String returnableMessage = data.addLine_WRITE(s[1], s[2], s[3]);
+						
 						PrintWriter out = new PrintWriter(mySocket.getOutputStream(), true);
-						out.println(returnableMessage);
+						out.println(returnableMessage+" "+clientCommand);
 					}
 					else
 						System.out.println("BUG! Client command does NOT start with READ or WRITE!!!");

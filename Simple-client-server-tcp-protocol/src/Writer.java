@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
 
-public class Reader extends Thread implements ClientProtocol{
+public class Writer extends Thread implements ClientProtocol{
 
 	private ArrayList<String> requestList;
 	private int myPort, requestsSent;
@@ -19,14 +19,13 @@ public class Reader extends Thread implements ClientProtocol{
 	private PrintWriter out;
 
 
-	public Reader(String host, int port)
+	public Writer(String host, int port)
 	{
 		requestList = new ArrayList<>();
 		myPort = port;
 		myHost = host;
-
-
 	}
+	
 	@Override
 	public void run() 
 	{
@@ -36,32 +35,26 @@ public class Reader extends Thread implements ClientProtocol{
 		printToConsoleIncomingAnswersFromServer();
 		closeConnectionWithServer();
 	}
-
-	/*
-	 * 
-	 * Reader will perform a random number of reads.
-	 * 
-	 */
-	public void initializeRequestList()
-	{
+	
+	@Override
+	public void initializeRequestList() {
 		ArrayList<String> defaultList = new ArrayList<String>();
-		defaultList.add("READ <DB9761>");//EXISTS
-		defaultList.add("READ <KT4129>");
-		defaultList.add("READ <AB1217>");//EXISTS
-		defaultList.add("READ <CV7771>");
-		defaultList.add("READ <XV4389>");//EXISTS
-		defaultList.add("READ <UJ9761>");//EXISTS
-		defaultList.add("READ <ST0821>");//EXISTS
-		defaultList.add("READ <KA0961>");//EXISTS
-		defaultList.add("READ <AB1217>");//EXISTS
-		defaultList.add("READ <KL0964>");//EXISTS
-		defaultList.add("READ <GG6264>");
-		defaultList.add("READ <XY4433>");//EXISTS
+		defaultList.add("WRITE <DB0061> <Arrival> <11:40>");
+		defaultList.add("WRITE <KT0029> <Arrival> <10:40>");
+		defaultList.add("WRITE <AB0017> <Arrival> <02:40>");
+		defaultList.add("WRITE <CV1171> <Arrival> <12:30>");
+		defaultList.add("WRITE <XV1189> <Arrival> <12:10>");
+		defaultList.add("WRITE <UJ1161> <Arrival> <17:20>");
+		defaultList.add("WRITE <ST9921> <Departure> <17:45>");
+		defaultList.add("WRITE <KA4461> <Departure> <12:00>");
+		defaultList.add("WRITE <AB4417> <Departure> <19:40>");
+		defaultList.add("WRITE <KL4464> <Departure> <14:50>");
+		defaultList.add("WRITE <GG1164> <Departure> <04:55>");
+		defaultList.add("WRITE <XY2233> <Departure> <08:20>");	
 		
-
 		Random rand = new Random();
 		int counter = 0;
-		int readsLimit = rand.nextInt(defaultList.size());//Random number <= size of defaultlist == number of read requests from server - 1
+		int writesLimit = rand.nextInt(defaultList.size());//Random number <= size of defaultlist == number of write requests from server - 1
 
 		//Eksagontai tyxaia stoixeia apo th defaultList kai eisagontai sthn requestList
 		do
@@ -69,17 +62,18 @@ public class Reader extends Thread implements ClientProtocol{
 			int index = rand.nextInt(defaultList.size());
 			requestList.add(defaultList.remove(index));
 			counter++;
-		}while(counter<readsLimit);
+		}while(counter<writesLimit);
 		
 		
 		
 		//Amount of requests-responses is:
 		requestsSent = requestList.size();
-		System.out.println("I am: "+this+" and i will make "+requestsSent+" read requests to server.");
+		System.out.println("I am: "+this+" and i will make "+requestsSent+" write requests to server.");
+
 	}
 
-	public void establishConnectionWithServer()
-	{
+	@Override
+	public void establishConnectionWithServer() {
 
 		try{
 			System.out.println("myHost is: "+myHost+", myPort is: "+myPort);
@@ -96,25 +90,21 @@ public class Reader extends Thread implements ClientProtocol{
 		catch (IOException e) 
 		{
 			System.out.println("Something went really bad!");		}
-
 	}
 
-
-	public void sendRequestsToServer()
-	{
-
-		for(String read: this.requestList)
+	@Override
+	public void sendRequestsToServer() {
+		for(String write: this.requestList)
 		{
-			out.println(read);
+			out.println(write);
 		}
-
 		System.out.println("Reader finished. END message will now be sent to ServerThread.");
 		out.println("END");
-
 	}
 
-	public void printToConsoleIncomingAnswersFromServer()
-	{
+	@Override
+	public void printToConsoleIncomingAnswersFromServer() {
+
 		int responsesReceived = 0;
 		try
 		{
@@ -143,20 +133,20 @@ public class Reader extends Thread implements ClientProtocol{
 			e.printStackTrace();
 		}
 	}
-	public void closeConnectionWithServer()
-	{
+
+	@Override
+	public void closeConnectionWithServer() {
 		try 
 		{
 			mySocket.close();
-			System.out.println("I am "+this+" Reader! Data Socket closed!");
+			System.out.println("I am "+this+" Writer! Data Socket closed!");
 		} 
 		catch (IOException e) 
 		{
 			e.printStackTrace();
-		}
+		}	
 	}
-	
-	
+
 	public String toString()
 	{
 		return this.getName();

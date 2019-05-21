@@ -6,11 +6,11 @@ public class ClientSideMain {
 
 	public static void main(String args[]) throws IOException {
 
-		Reader r1 = new Reader(HOST1,PORT1);
-		Reader r2 = new Reader(HOST2,PORT2);
+		Reader r = new Reader(HOST1,PORT1);
+		Writer w = new Writer(HOST2,PORT2);
 		
-		r1.start();
-		r2.start();
+		r.start();
+		w.start();
 
 	}
 }			
