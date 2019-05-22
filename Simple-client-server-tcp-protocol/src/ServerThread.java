@@ -27,7 +27,6 @@ public class ServerThread implements Runnable{
 					{
 						l = data.getLine_READ(clientCommand.substring(6,clientCommand.length()-1));
 						//l now looks like: l["XY4352","Arrival","12:40"]
-						//System.out.println("The line found was: l[0] = "+l[0]+", l[1] = "+l[1]+", l[2] = "+l[2]);
 						PrintWriter out = new PrintWriter(mySocket.getOutputStream(), true);
 						if(l==null)
 							out.println("RERR "+clientCommand);
@@ -42,12 +41,11 @@ public class ServerThread implements Runnable{
 						s[3]=s[3].substring(1,s[3].length()-1);
 						
 						String returnableMessage = data.addLine_WRITE(s[1], s[2], s[3]);
-						
 						PrintWriter out = new PrintWriter(mySocket.getOutputStream(), true);
 						out.println(returnableMessage+" "+clientCommand);
 					}
 					else
-						System.out.println("BUG! Client command does NOT start with READ or WRITE!!!");
+						System.out.println("CRAZY BUG! Client command does NOT start with READ or WRITE!!!");
 				} 
 			}
 			catch (Exception e) 
@@ -57,10 +55,8 @@ public class ServerThread implements Runnable{
 			break;
 		}
 	}
-
 	public void setClientCommand(String cc)
 	{
 		this.clientCommand = cc;
 	}
-
 }

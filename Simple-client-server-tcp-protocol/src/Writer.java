@@ -18,14 +18,12 @@ public class Writer extends Thread implements ClientProtocol{
 	private BufferedReader in;
 	private PrintWriter out;
 
-
 	public Writer(String host, int port)
 	{
 		requestList = new ArrayList<>();
 		myPort = port;
 		myHost = host;
 	}
-	
 	@Override
 	public void run() 
 	{
@@ -35,7 +33,6 @@ public class Writer extends Thread implements ClientProtocol{
 		printToConsoleIncomingAnswersFromServer();
 		closeConnectionWithServer();
 	}
-	
 	@Override
 	public void initializeRequestList() {
 		ArrayList<String> defaultList = new ArrayList<String>();
@@ -55,7 +52,6 @@ public class Writer extends Thread implements ClientProtocol{
 		Random rand = new Random();
 		int counter = 0;
 		int writesLimit = rand.nextInt(defaultList.size());//Random number <= size of defaultlist == number of write requests from server - 1
-
 		//Eksagontai tyxaia stoixeia apo th defaultList kai eisagontai sthn requestList
 		do
 		{
@@ -64,28 +60,20 @@ public class Writer extends Thread implements ClientProtocol{
 			counter++;
 		}while(counter<writesLimit);
 		
-		
-		
 		//Amount of requests-responses is:
 		requestsSent = requestList.size();
-		System.out.println("I am: "+this+" and i will make "+requestsSent+" write requests to server.");
 
 	}
 
 	@Override
 	public void establishConnectionWithServer() {
-
 		try{
 			System.out.println("myHost is: "+myHost+", myPort is: "+myPort);
 			mySocket = new Socket(myHost,myPort);
-
 			InputStream is = mySocket.getInputStream();
 			in = new BufferedReader(new InputStreamReader(is));
 			OutputStream os = mySocket.getOutputStream();
 			out = new PrintWriter(os,true);
-
-			System.out.println("I am: "+this+". i managed to establish connection to " + myHost);
-
 		} 
 		catch (IOException e) 
 		{
@@ -98,7 +86,6 @@ public class Writer extends Thread implements ClientProtocol{
 		{
 			out.println(write);
 		}
-		System.out.println("Reader finished. END message will now be sent to ServerThread.");
 		out.println("END");
 	}
 
@@ -114,7 +101,7 @@ public class Writer extends Thread implements ClientProtocol{
 				if(ins.hasNextLine())
 				{
 					String serverResponse = ins.nextLine();
-					System.out.println("I am "+this+". Response num = #"+responsesReceived+" "+serverResponse);
+					//System.out.println("I am "+this+". Response num = #"+responsesReceived+" "+serverResponse);
 					responsesReceived++;
 					if(!(responsesReceived<requestsSent))
 					{
@@ -123,7 +110,15 @@ public class Writer extends Thread implements ClientProtocol{
 					}
 				} 
 				else
+				{
 					System.out.println("Infinity...");
+					try {
+						sleep(1000);
+					} catch (InterruptedException e) {
+						
+						e.printStackTrace();
+					}
+				}
 			}
 			in.close();
 			ins.close();
@@ -139,7 +134,6 @@ public class Writer extends Thread implements ClientProtocol{
 		try 
 		{
 			mySocket.close();
-			System.out.println("I am "+this+" Writer! Data Socket closed!");
 		} 
 		catch (IOException e) 
 		{

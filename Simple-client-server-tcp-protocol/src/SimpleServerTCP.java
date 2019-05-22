@@ -20,22 +20,17 @@ public class SimpleServerTCP extends Thread
 	@Override
 	public void run()
 	{
-
 		try 
 		{
-
 			while(true)
 			{
 				ServerSocket connectionSocket = null;
 				connectionSocket = new ServerSocket(myPort);
-
-				System.out.println("Server is listening to port: " + myPort);
+				//System.out.println("Server is listening to port: " + myPort);
 				Socket dataSocket;
-
 				dataSocket = connectionSocket.accept();
-
-				System.out.println("Received request from " + dataSocket.getInetAddress());
-				System.out.println("Connected: " + dataSocket);
+				//System.out.println("Received request from " + dataSocket.getInetAddress());
+				//System.out.println("Connected: " + dataSocket);
 				try 
 				{
 					Scanner in = new Scanner(dataSocket.getInputStream());
@@ -48,11 +43,8 @@ public class SimpleServerTCP extends Thread
 							if(!clientRequest.equals("END"))							
 								new ServerThread(dataSocket,clientRequest, ServerSideMain.ad).run();							
 							else							
-								break;		
-							System.out.println("New ServerThread is running, in order to process request: "+clientRequest);
-						}	
-
-						
+								break;							
+						}						
 					}
 					in.close();
 				}

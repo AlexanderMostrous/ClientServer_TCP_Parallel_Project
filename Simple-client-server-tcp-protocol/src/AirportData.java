@@ -16,16 +16,12 @@ public class AirportData {
 		lock = new ReentrantReadWriteLock();
 		writeLock = lock.writeLock();
 		readLock = lock.readLock();
-
 	}
-
-	
 	/*
 	 * Evresh grammhs ston pinaka me anazhthsh vasei tou kwdikou dromologiou mias pthshs.
 	 */
 	public String[] getLine_READ(String code)
 	{
-		
 		try
 		{
 			readLock.lock();
@@ -42,13 +38,10 @@ public class AirportData {
 					found = true;
 					s = rows.get(counter);
 				}
-
 				counter++;
-
 				if(counter>=rows.size())
 					break;
 			}
-
 			if(found)		
 				return s;
 			else
@@ -64,22 +57,18 @@ public class AirportData {
 	public String addLine_WRITE(String code, String status, String time)
 	{
 		try {
-		writeLock.lock();
-		rows.add(new String[] {code,status,time});
-		
-			wait(1000*writerDelay);//Delay writing procedure so that locks hold on for a big chunk of time and induce traffic.
-			return "WOK";
-			
+			writeLock.lock();
+			rows.add(new String[] {code,status,time});
+			Thread.sleep(1000*writerDelay);//Delay writing procedure so that locks hold on for a big chunk of time and induce traffic.
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 			return "WERR";
 		}		
 		finally
 		{
-		writeLock.unlock();
-		
+			writeLock.unlock();
 		}
-		
+		return "WOK";
 	}
 
 	private void initializeDummy()
@@ -90,27 +79,27 @@ public class AirportData {
 		rows.add(new String[] {"AG4598","Arrival","17:15"});
 		rows.add(new String[] {"BD4311","Arrival","12:00"});
 		rows.add(new String[] {"XY4389","Departure","23:30"});
-		
+
 		//6-10
 		rows.add(new String[] {"DB9761","Arrival","00:55"});		
 		rows.add(new String[] {"CJ1231","Departure","00:55"});
 		rows.add(new String[] {"XY4433","Departure","00:55"});
 		rows.add(new String[] {"XV4389","Departure","00:55"});
 		rows.add(new String[] {"XY5422","Arrival","00:55"});
-		
+
 		//11-15
 		rows.add(new String[] {"XY6431","Departure","20:25"});
 		rows.add(new String[] {"XH9761","Departure","00:00"});
 		rows.add(new String[] {"KY5461","Departure","07:15"});
 		rows.add(new String[] {"LO9111","Departure","08:55"});
 		rows.add(new String[] {"ST0961","Departure","02:30"});
-		
+
 		//16-20
 		rows.add(new String[] {"UJ9761","Arrival","00:55"});
 		rows.add(new String[] {"ST0821","Arrival","14:05"});
 		rows.add(new String[] {"KA0961","Departure","17:45"});
 		rows.add(new String[] {"AB1217","Arrival","02:20"});
 		rows.add(new String[] {"KL0964","Departure","04:50"});
-		
+
 	}
 }
