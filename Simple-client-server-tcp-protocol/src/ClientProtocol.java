@@ -1,9 +1,13 @@
+import java.util.ArrayList;
 
-public interface ClientProtocol {
+public abstract class ClientProtocol {
 
-	abstract void initializeRequestList();
-	abstract void establishConnectionWithServer();
-	abstract void sendRequestsToServer();
-	abstract void printToConsoleIncomingAnswersFromServer();
-	abstract void closeConnectionWithServer();
+	protected ArrayList<String> requestList;
+	
+	public abstract void initializeRequestList();
+	public ArrayList<String> getRequestList()
+	{
+		return requestList;
+	}
+	
 }
