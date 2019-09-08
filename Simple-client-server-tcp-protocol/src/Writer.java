@@ -12,17 +12,14 @@ import java.util.Scanner;
 public class Writer extends Thread implements ClientProtocol{
 
 	private ArrayList<String> requestList;
-	private int myPort, requestsSent;
-	private String myHost;
+	private int requestsSent;
 	private Socket mySocket;
 	private BufferedReader in;
 	private PrintWriter out;
 
-	public Writer(String host, int port)
+	public Writer()
 	{
 		requestList = new ArrayList<>();
-		myPort = port;
-		myHost = host;
 	}
 	@Override
 	public void run() 
@@ -68,8 +65,8 @@ public class Writer extends Thread implements ClientProtocol{
 	@Override
 	public void establishConnectionWithServer() {
 		try{
-			System.out.println("myHost is: "+myHost+", myPort is: "+myPort);
-			mySocket = new Socket(myHost,myPort);
+			System.out.println("myHost is: "+ClientSideMain.myHost+", myPort is: "+ServerSideMain.myPort);
+			mySocket = new Socket(ClientSideMain.myHost,ServerSideMain.myPort);
 			InputStream is = mySocket.getInputStream();
 			in = new BufferedReader(new InputStreamReader(is));
 			OutputStream os = mySocket.getOutputStream();

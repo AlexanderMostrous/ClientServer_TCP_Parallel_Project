@@ -1,20 +1,36 @@
 import java.io.IOException;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.util.ArrayList;
 
 public class ServerSideMain {
 
 	public static AirportData ad = new AirportData();
-
+	public static int myPort = 1234;
+	public static ArrayList<Socket> connections = new ArrayList<Socket>();
+	@SuppressWarnings("resource")
 	public static void main(String[] args) throws IOException {
 
-	SimpleServerTCP ss1 = new SimpleServerTCP(1234);
-	
-	ss1.start();
-	
-	SimpleServerTCP ss2 = new SimpleServerTCP(2345);
-	
-	ss2.start();
-
-
+		try
+		{
+			ServerSocket connectionSocket = null;
+			connectionSocket = new ServerSocket(myPort);
+			Socket dataSocket;
+			while(true)
+			{
+				dataSocket = connectionSocket.accept();
+				ServerThread st = new ServerThread(dataSocket);
+				st.run();
+				connections.add(dataSocket);
+				
+				for(Socket s : connections)
+					if(s.isClosed())
+						connections.remove(s);
+			}
+		}
+		catch (IOException e) 
+		{
+			e.printStackTrace();
+		}
 	}
-
 }

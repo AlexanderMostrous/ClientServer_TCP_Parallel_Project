@@ -12,20 +12,15 @@ import java.util.Scanner;
 public class Reader extends Thread implements ClientProtocol{
 
 	private ArrayList<String> requestList;
-	private int myPort, requestsSent;
-	private String myHost;
+	private int requestsSent;
 	private Socket mySocket;
 	private BufferedReader in;
 	private PrintWriter out;
 
 
-	public Reader(String host, int port)
+	public Reader()
 	{
 		requestList = new ArrayList<>();
-		myPort = port;
-		myHost = host;
-
-
 	}
 	@Override
 	public void run() 
@@ -82,15 +77,15 @@ public class Reader extends Thread implements ClientProtocol{
 	{
 
 		try{
-			System.out.println("myHost is: "+myHost+", myPort is: "+myPort);
-			mySocket = new Socket(myHost,myPort);
+			System.out.println("myHost is: "+ClientSideMain.myHost+", myPort is: "+ServerSideMain.myPort);
+			mySocket = new Socket(ClientSideMain.myHost,ServerSideMain.myPort);
 
 			InputStream is = mySocket.getInputStream();
 			in = new BufferedReader(new InputStreamReader(is));
 			OutputStream os = mySocket.getOutputStream();
 			out = new PrintWriter(os,true);
 
-			System.out.println("I am: "+this+". i managed to establish connection to " + myHost);
+			System.out.println("I am: "+this+". i managed to establish connection to " + ClientSideMain.myHost);
 
 		} 
 		catch (IOException e) 
