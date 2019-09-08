@@ -16,6 +16,7 @@ public class ClientSideMain {
 		for(int i=0;i<writers;i++)
 			clients.add(new ClientThread("WRITER"));
 		
+		System.out.println("ClientMain says: "+readers+" readers and "+writers+" writers have been created.");
 		for(ClientThread c : clients)
 			c.run();
 

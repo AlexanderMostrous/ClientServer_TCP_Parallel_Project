@@ -23,14 +23,19 @@ public class ServerThread implements Runnable{
 					clientRequest = in.nextLine();
 					if(!clientRequest.equals("END"))
 					{
+						System.out.println("ServerThread "+this+" says: Client request is = "+clientRequest+"; Process begins.");
 						ServerProtocol sp = new ServerProtocol();
 						String reply = sp.processRequest(clientRequest);
+						System.out.println("ServerThread "+this+" says: Request = "+clientRequest+" processed; Reply begins.");
 
 						PrintWriter out = new PrintWriter(mySocket.getOutputStream(), true);	
 						out.println(reply);
 					}
-					else							
-						break;							
+					else
+					{
+						System.out.println("ServerThread "+this+" says: I just received the \"END\" message and I will now close connection to client.");
+						break;
+					}
 				}						
 			}
 			in.close();

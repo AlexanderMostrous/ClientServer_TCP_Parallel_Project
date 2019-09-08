@@ -15,11 +15,14 @@ public class ServerSideMain {
 		{
 			ServerSocket connectionSocket = null;
 			connectionSocket = new ServerSocket(myPort);
+			System.out.println("Server is listening to port: " + myPort);	
 			Socket dataSocket;
 			while(true)
 			{
 				dataSocket = connectionSocket.accept();
 				ServerThread st = new ServerThread(dataSocket);
+				System.out.println("Server says: Received request from " + dataSocket.getInetAddress());
+				
 				st.run();
 				connections.add(dataSocket);
 				

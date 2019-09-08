@@ -40,6 +40,7 @@ public class ClientThread implements Runnable{
 		while(requestList.size()>0)
 		{
 			aRequest = requestList.remove(0);//Extract first request of list
+			System.out.println("ClientThread says: I am client"+this+". My next request to Server is: "+aRequest+".");
 			out.println(aRequest);
 			Scanner ins = new Scanner(in);
 			while(true)
@@ -47,13 +48,15 @@ public class ClientThread implements Runnable{
 				if(ins.hasNextLine())
 				{
 					aServerResponse = ins.nextLine();
-					System.out.println("My port is: "+mySocket.getPort()+"Server responded: "+aServerResponse);
+					System.out.println("ClientThread says: I am client "+this+". Server responded: "+aServerResponse+".");
 				} 
 				else
 					break;					
 			}
 			ins.close();
 		}
+
+		System.out.println("ClientThread says: I am client"+this+". I just finished my requests to Server and I will now send the \"END\" message.");
 		out.println("END");
 	}
 
@@ -67,6 +70,7 @@ public class ClientThread implements Runnable{
 			in = new BufferedReader(new InputStreamReader(is));
 			OutputStream os = mySocket.getOutputStream();
 			out = new PrintWriter(os,true);
+			System.out.println("ClientThread says: I am client "+this+". "+"I achieved connection with server. My socket is: "+mySocket+".");
 		} 
 		catch (IOException e) 
 		{
