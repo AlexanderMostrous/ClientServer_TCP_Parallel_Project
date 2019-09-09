@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 import java.util.Random;
 
-public class WriterProtocol extends ClientProtocol{
+public class WriteProtocol extends ClientProtocol{
 
 	
 	public void initializeRequestList() {

@@ -25,7 +25,6 @@ public class AirportData {
 		try
 		{
 			readLock.lock();
-			System.out.println(Thread.currentThread().getName()+" ...i am in!");
 			String[] s = new String[colNumber];
 
 			boolean found = false;
@@ -49,7 +48,6 @@ public class AirportData {
 		}
 		finally
 		{
-			System.out.println(Thread.currentThread().getName()+" ...i am out!");
 			readLock.unlock();
 		}
 	}

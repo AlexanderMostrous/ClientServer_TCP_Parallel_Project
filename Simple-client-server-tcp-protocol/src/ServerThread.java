@@ -21,6 +21,7 @@ public class ServerThread implements Runnable{
 				if(in.hasNextLine())
 				{
 					clientRequest = in.nextLine();
+					System.out.println("ServerThread "+this+" says: Message received is = "+clientRequest+".");
 					if(!clientRequest.equals("END"))
 					{
 						System.out.println("ServerThread "+this+" says: Client request is = "+clientRequest+"; Process begins.");

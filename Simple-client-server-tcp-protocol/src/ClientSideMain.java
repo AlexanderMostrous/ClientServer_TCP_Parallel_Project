@@ -4,21 +4,21 @@ import java.util.ArrayList;
 public class ClientSideMain {
 	public static final String myHost = "localhost";
 
-	public static ArrayList<ClientThread> clients = new ArrayList<ClientThread>();
 	public static void main(String args[]) throws IOException {
 
 		int readers, writers;
-		readers = 1;
-		writers = 0;
-		
+		readers = 6;
+		writers = 2;
+		int portNumber = 1200;
+		System.out.println("ClientMain says: "+readers+" readers and "+writers+" writers will now be created.");
 		for(int i=0;i<readers;i++)
-			clients.add(new ClientThread("READER"));
-		for(int i=0;i<writers;i++)
-			clients.add(new ClientThread("WRITER"));
+			new Thread(new ClientThread("READER",portNumber)).start();
 		
-		System.out.println("ClientMain says: "+readers+" readers and "+writers+" writers have been created.");
-		for(ClientThread c : clients)
-			c.run();
+		for(int i=0;i<writers;i++)		
+			new Thread(new ClientThread("WRITER",portNumber)).start();
+			
+		
+		
 
 	}
 }			

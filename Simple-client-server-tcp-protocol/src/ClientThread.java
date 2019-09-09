@@ -14,18 +14,20 @@ public class ClientThread implements Runnable{
 	private Socket mySocket;
 	private BufferedReader in;
 	private PrintWriter out;
+	private int myPort;
 	
-	public ClientThread(String type)
+	public ClientThread(String type,int port)
 	{
+		myPort = port;
 		if(type=="READER")
 		{
-			ReaderProtocol rp = new ReaderProtocol();
+			ReadProtocol rp = new ReadProtocol();
 			rp.initializeRequestList();
 			requestList = rp.getRequestList();
 		}
 		else//type=="WRITER
 		{
-			WriterProtocol wp = new WriterProtocol();
+			WriteProtocol wp = new WriteProtocol();
 			wp.initializeRequestList();
 			requestList = wp.getRequestList();
 		}
@@ -37,40 +39,41 @@ public class ClientThread implements Runnable{
 		establishConnectionWithServer();
 		
 		String aRequest, aServerResponse;
+		Scanner ins = new Scanner(in);
 		while(requestList.size()>0)
 		{
 			aRequest = requestList.remove(0);//Extract first request of list
 			System.out.println("ClientThread says: I am client"+this+". My next request to Server is: "+aRequest+".");
 			out.println(aRequest);
-			Scanner ins = new Scanner(in);
 			while(true)
 			{
 				if(ins.hasNextLine())
 				{
 					aServerResponse = ins.nextLine();
 					System.out.println("ClientThread says: I am client "+this+". Server responded: "+aServerResponse+".");
-				} 
-				else
-					break;					
+					break;
+				}					
 			}
-			ins.close();
+			
 		}
-
+		
 		System.out.println("ClientThread says: I am client"+this+". I just finished my requests to Server and I will now send the \"END\" message.");
 		out.println("END");
+		//System.out.println("ClientThread says: I am client"+this+". I just sent the \"END\" message, while sockett isClosed() == ."+mySocket.isClosed());
+		ins.close();
 	}
 
 	private void establishConnectionWithServer() 
 	{
 		try
 		{
-			System.out.println("myHost is: "+ClientSideMain.myHost+", myPort is: "+ServerSideMain.myPort);
-			mySocket = new Socket(ClientSideMain.myHost,ServerSideMain.myPort);
+			System.out.println("myHost is: "+ClientSideMain.myHost+", myPort is: "+this.myPort);
+			mySocket = new Socket(ClientSideMain.myHost,this.myPort);
 			InputStream is = mySocket.getInputStream();
 			in = new BufferedReader(new InputStreamReader(is));
 			OutputStream os = mySocket.getOutputStream();
 			out = new PrintWriter(os,true);
-			System.out.println("ClientThread says: I am client "+this+". "+"I achieved connection with server. My socket is: "+mySocket+".");
+			System.out.println("ClientThread says: I am client "+this+". "+"I achieved connection with server.\n My socket is: "+mySocket+" and I will make "+requestList.size()+" requests.");
 		} 
 		catch (IOException e) 
 		{

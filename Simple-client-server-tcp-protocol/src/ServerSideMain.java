@@ -6,29 +6,29 @@ import java.util.ArrayList;
 public class ServerSideMain {
 
 	public static AirportData ad = new AirportData();
-	public static int myPort = 1234;
-	public static ArrayList<Socket> connections = new ArrayList<Socket>();
+	//public static int myPort = 1234;
+	
 	@SuppressWarnings("resource")
 	public static void main(String[] args) throws IOException {
-
+		int portNumber = 1200, connectionsNumber = 1;
 		try
 		{
-			ServerSocket connectionSocket = null;
-			connectionSocket = new ServerSocket(myPort);
-			System.out.println("Server is listening to port: " + myPort);	
+			ServerSocket connectionSocket = new ServerSocket(portNumber);
 			Socket dataSocket;
-			while(true)
+			while(connectionsNumber<=10)
 			{
+				
+				
+				System.out.println("Server is listening to port: #"+connectionsNumber+" - "+ portNumber);	
+				
+
 				dataSocket = connectionSocket.accept();
-				ServerThread st = new ServerThread(dataSocket);
 				System.out.println("Server says: Received request from " + dataSocket.getInetAddress());
+				(new Thread(new ServerThread(dataSocket))).start();
+			
+
+				connectionsNumber++;
 				
-				st.run();
-				connections.add(dataSocket);
-				
-				for(Socket s : connections)
-					if(s.isClosed())
-						connections.remove(s);
 			}
 		}
 		catch (IOException e) 
