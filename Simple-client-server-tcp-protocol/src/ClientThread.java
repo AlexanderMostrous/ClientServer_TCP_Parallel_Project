@@ -25,11 +25,23 @@ public class ClientThread implements Runnable{
 			rp.initializeRequestList();
 			requestList = rp.getRequestList();
 		}
-		else//type=="WRITER
+		else if(type=="WRITER")
 		{
 			WriteProtocol wp = new WriteProtocol();
 			wp.initializeRequestList();
 			requestList = wp.getRequestList();
+		}
+		else if(type=="MODIFIER")
+		{
+			ModifyProtocol mp = new ModifyProtocol();
+			mp.initializeRequestList();
+			requestList = mp.getRequestList();
+		}
+		else if(type=="DELETER")
+		{
+			DeleteProtocol dp = new DeleteProtocol();
+			dp.initializeRequestList();
+			requestList = dp.getRequestList();
 		}
 	}
 	

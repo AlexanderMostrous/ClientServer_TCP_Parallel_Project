@@ -10,25 +10,17 @@ public class ServerSideMain {
 	
 	@SuppressWarnings("resource")
 	public static void main(String[] args) throws IOException {
-		int portNumber = 1200, connectionsNumber = 1;
+		int portNumber = 1200;
 		try
 		{
 			ServerSocket connectionSocket = new ServerSocket(portNumber);
 			Socket dataSocket;
-			while(connectionsNumber<=10)
+			System.out.println("Server is listening to port: "+ portNumber);
+			while(true)
 			{
-				
-				
-				System.out.println("Server is listening to port: #"+connectionsNumber+" - "+ portNumber);	
-				
-
 				dataSocket = connectionSocket.accept();
 				System.out.println("Server says: Received request from " + dataSocket.getInetAddress());
 				(new Thread(new ServerThread(dataSocket))).start();
-			
-
-				connectionsNumber++;
-				
 			}
 		}
 		catch (IOException e) 

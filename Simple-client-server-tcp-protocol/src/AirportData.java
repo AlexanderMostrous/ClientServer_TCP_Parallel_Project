@@ -17,6 +17,73 @@ public class AirportData {
 		writeLock = lock.writeLock();
 		readLock = lock.readLock();
 	}
+	
+	public String  removeLine_DELETE(String code)
+	{
+		boolean found = false;
+		try {
+			writeLock.lock();
+			
+			for(String[] s : rows)
+			{
+				if(s[0].equals(code))
+				{		
+					found = true;
+					Thread.sleep(1000*writerDelay);//Delay delete procedure so that locks hold on for a big chunk of time and induce traffic.
+					rows.remove(s);
+					break;
+				}
+			}			
+			
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+			return "DERR";
+		}		
+		finally
+		{
+			writeLock.unlock();
+		}
+		if(found)
+			return "DOK";
+		else
+			return "DERR";
+	}
+	
+	
+	public String editLine_MODIFY(String oldCode, String newCode, String newStatus, String newTime)
+	{
+		boolean found = false;
+		try {
+			writeLock.lock();
+			
+			for(String[] s : rows)
+			{
+				if(s[0].equals(oldCode))
+				{			
+					found = true;
+					Thread.sleep(1000*writerDelay);//Delay modifying procedure so that locks hold on for a big chunk of time and induce traffic.
+					s[0] = newCode;
+					s[1] = newStatus;
+					s[2] = newTime;
+					break;
+				}
+			}			
+			
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+			return "MERR";
+		}		
+		finally
+		{
+			writeLock.unlock();
+		}
+		if(found)
+			return "MOK";
+		else
+			return "MERR";
+	}
+	
+	
 	/*
 	 * Evresh grammhs ston pinaka me anazhthsh vasei tou kwdikou dromologiou mias pthshs.
 	 */
