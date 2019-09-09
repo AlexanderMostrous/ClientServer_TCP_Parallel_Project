@@ -55,23 +55,20 @@ public class ClientThread implements Runnable{
 		while(requestList.size()>0)
 		{
 			aRequest = requestList.remove(0);//Extract first request of list
-			System.out.println("ClientThread says: I am client"+this+". My next request to Server is: "+aRequest+".");
+			Logger.writeInTxtFile("ClientThread says: I am client"+this+". My next request to Server is: "+aRequest+".");
 			out.println(aRequest);
 			while(true)
 			{
 				if(ins.hasNextLine())
 				{
 					aServerResponse = ins.nextLine();
-					System.out.println("ClientThread says: I am client "+this+". Server responded: "+aServerResponse+".");
+					Logger.writeInTxtFile("ClientThread says: I am client "+this+". Server responded: "+aServerResponse+".");
 					break;
 				}					
 			}
-			
 		}
-		
-		System.out.println("ClientThread says: I am client"+this+". I just finished my requests to Server and I will now send the \"END\" message.");
+		Logger.writeInTxtFile("ClientThread says: I am client"+this+". I just finished my requests to Server and I will now send the \"END\" message.");
 		out.println("END");
-		//System.out.println("ClientThread says: I am client"+this+". I just sent the \"END\" message, while sockett isClosed() == ."+mySocket.isClosed());
 		ins.close();
 	}
 
@@ -79,17 +76,17 @@ public class ClientThread implements Runnable{
 	{
 		try
 		{
-			System.out.println("myHost is: "+ClientSideMain.myHost+", myPort is: "+this.myPort);
+			Logger.writeInTxtFile("ClientThread says: myHost is = "+ClientSideMain.myHost+", myPort is = "+this.myPort);
 			mySocket = new Socket(ClientSideMain.myHost,this.myPort);
 			InputStream is = mySocket.getInputStream();
 			in = new BufferedReader(new InputStreamReader(is));
 			OutputStream os = mySocket.getOutputStream();
 			out = new PrintWriter(os,true);
-			System.out.println("ClientThread says: I am client "+this+". "+"I achieved connection with server.\n My socket is: "+mySocket+" and I will make "+requestList.size()+" requests.");
+			Logger.writeInTxtFile("ClientThread says: I am client "+this+". "+"I achieved connection with server.\n My socket is: "+mySocket+" and I will make "+requestList.size()+" requests.");
 		} 
 		catch (IOException e) 
 		{
-			System.out.println("Something went really bad!");		
+			Logger.writeInTxtFile("ClientThread "+this+" says: establishConnectionWithServer() crashed. Something went really bad!");		
 		}
 	}
 }

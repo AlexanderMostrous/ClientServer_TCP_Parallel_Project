@@ -21,9 +21,9 @@ public class AirportData {
 	public String  removeLine_DELETE(String code)
 	{
 		boolean found = false;
-		try {
+		try 
+		{
 			writeLock.lock();
-			
 			for(String[] s : rows)
 			{
 				if(s[0].equals(code))
@@ -33,9 +33,10 @@ public class AirportData {
 					rows.remove(s);
 					break;
 				}
-			}			
-			
-		} catch (InterruptedException e) {
+			}				
+		} 
+		catch (InterruptedException e) 
+		{
 			e.printStackTrace();
 			return "DERR";
 		}		
@@ -53,9 +54,9 @@ public class AirportData {
 	public String editLine_MODIFY(String oldCode, String newCode, String newStatus, String newTime)
 	{
 		boolean found = false;
-		try {
+		try 
+		{
 			writeLock.lock();
-			
 			for(String[] s : rows)
 			{
 				if(s[0].equals(oldCode))
@@ -69,7 +70,9 @@ public class AirportData {
 				}
 			}			
 			
-		} catch (InterruptedException e) {
+		} 
+		catch (InterruptedException e) 
+		{
 			e.printStackTrace();
 			return "MERR";
 		}		
@@ -93,10 +96,8 @@ public class AirportData {
 		{
 			readLock.lock();
 			String[] s = new String[colNumber];
-
 			boolean found = false;
 			int counter = 0;
-
 			while(!found)
 			{
 				if(rows.get(counter)[0].equals(code))
@@ -121,11 +122,14 @@ public class AirportData {
 
 	public String addLine_WRITE(String code, String status, String time)
 	{
-		try {
+		try 
+		{
 			writeLock.lock();
 			rows.add(new String[] {code,status,time});
 			Thread.sleep(1000*writerDelay);//Delay writing procedure so that locks hold on for a big chunk of time and induce traffic.
-		} catch (InterruptedException e) {
+		} 
+		catch (InterruptedException e) 
+		{
 			e.printStackTrace();
 			return "WERR";
 		}		
@@ -165,6 +169,5 @@ public class AirportData {
 		rows.add(new String[] {"KA0961","Departure","17:45"});
 		rows.add(new String[] {"AB1217","Arrival","02:20"});
 		rows.add(new String[] {"KL0964","Departure","04:50"});
-
 	}
 }

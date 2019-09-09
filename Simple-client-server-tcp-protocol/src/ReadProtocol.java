@@ -19,7 +19,6 @@ public class ReadProtocol extends ClientProtocol{
 		defaultList.add("READ <GG6264>");
 		defaultList.add("READ <XY4433>");//EXISTS
 		
-
 		Random rand = new Random();
 		int counter = 0;
 		int readsLimit = rand.nextInt(defaultList.size());//Random number <= size of defaultlist == number of read requests from server - 1

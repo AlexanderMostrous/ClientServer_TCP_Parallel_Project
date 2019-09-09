@@ -1,47 +1,24 @@
-import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.io.PrintWriter;
 
-public class Logger {
+public abstract class Logger {
 
-	private ArrayList<String> log;
-	private String myDirectory;
+	private static PrintWriter writer;
 	
-	public Logger(String txtDirectory){
-		log = new ArrayList<>();
-		myDirectory = txtDirectory;
-	}
-	
-	public void addToLog(String input){
-		
-		log.add(input);
-	}
-	//C:\Users\alexandros\Dropbox\Shared main-libmos\Parallel Programming
-	public void writeInTxtFile(String directory){
-		FileWriter writer = null;
-		try {
-			writer = new FileWriter(directory+"\\parallelResults.txt");
-
-			String newLine = System.getProperty("line.separator");
-					
-			writer.write("  ");
-			
-			writer.write(newLine);	
-
-			
-		} catch (IOException e) {
-
+	public static void setPath(String txtDirectory)
+	{
+		try
+		{
+			writer = new PrintWriter(txtDirectory);
+		}
+		catch (IOException e) 
+		{
 			e.printStackTrace();
 		}
-		finally
-		{
-			try 
-			{
-				writer.close();
-			} catch (IOException e) 
-			{
-				e.printStackTrace();
-			}
-		}
+	}
+	
+	public static void writeInTxtFile(String text)
+	{	
+		writer.println(text);
 	}
 }

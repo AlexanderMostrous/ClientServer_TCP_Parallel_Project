@@ -4,7 +4,8 @@ import java.util.Random;
 public class DeleteProtocol extends ClientProtocol{
 
 	@Override
-	public void initializeRequestList() {
+	public void initializeRequestList() 
+	{
 		ArrayList<String> defaultList = new ArrayList<String>();
 		defaultList.add("DELETE <KA0061>");
 		defaultList.add("DELETE <LH0029>");

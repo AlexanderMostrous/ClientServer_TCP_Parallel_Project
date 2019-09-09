@@ -1,5 +1,3 @@
-import java.io.PrintWriter;
-
 public class ServerProtocol {
 
 	public String processRequest(String input) {
@@ -38,8 +36,7 @@ public class ServerProtocol {
 			String[] s = input.split(" ");
 			s[1]=s[1].substring(1,s[1].length()-1);
 			
-			return ServerSideMain.ad.removeLine_DELETE(s[1])+" "+input;
-			
+			return ServerSideMain.ad.removeLine_DELETE(s[1])+" "+input;	
 		}
 	}
 }

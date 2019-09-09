@@ -3,7 +3,6 @@ import java.util.Random;
 
 public class WriteProtocol extends ClientProtocol{
 
-	
 	public void initializeRequestList() {
 		ArrayList<String> defaultList = new ArrayList<String>();
 		defaultList.add("WRITE <DB0061> <Arrival> <11:40>");

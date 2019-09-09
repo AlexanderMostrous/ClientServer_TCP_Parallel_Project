@@ -5,14 +5,23 @@ public class ClientSideMain {
 	public static final String myHost = "localhost";
 
 	public static void main(String args[]) throws IOException {
-
-		int readers, writers, modifiers, deleters;
+		
+		//Logger class is responsible for registering the results
+		//Set directory in which a new txt file will be created and filled with the Client's data
+		String directory = "C:\\Users\\alexandros\\Desktop\\TCP_ClientResults.txt";		
+		Logger.setPath(directory);
+		
+		int readers, writers, modifiers, deleters;//Adjust their respective values accordingly.
+		
 		readers = 8;
 		writers = 2;
 		modifiers = 2;
 		deleters = 1;
+		
 		int portNumber = 1200;
-		System.out.println("ClientMain says: "+readers+" readers and "+writers+" writers will now be created.");
+		Logger.writeInTxtFile("ClientMain says: "+readers+" readers, "+writers+" writers, "+modifiers+"modifiers and "+deleters+" deleters will now be created.");
+		
+		//Multi-client scheme. There are 4 different types of clients, all of which are runnable Threads.
 		for(int i=0;i<readers;i++)
 			new Thread(new ClientThread("READER",portNumber)).start();
 		
@@ -24,9 +33,6 @@ public class ClientSideMain {
 		
 		for(int i=0;i<deleters;i++)		
 			new Thread(new ClientThread("DELETER",portNumber)).start();
-		
-		
-
 	}
 }			
 
